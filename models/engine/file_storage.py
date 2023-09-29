@@ -77,16 +77,20 @@ class FileStorage:
         cls = str(cls)
         cls = cls.split('.')[2]
         cls = cls[:-2]
-        self.reload()
-        data = self.__objects
+        if classes[cls]:
+            self.reload()
+            data = self.__objects
 
-        if data:
-            for obj in data:
-                obj_cls = obj.split(" ")[0].split(".")[0]
-                if obj_cls == cls:
-                    return data[obj]
-
-        return None
+            if data:
+                for obj in data:
+                    obj_cls = obj.split(" ")[0].split(".")[0]
+                    obj_id = obj.split(" ")[0].split(".")[1]
+                    if obj_cls == cls and obj_id == id:
+                        return data[obj]
+            return None
+        else:
+            raise TypeError('Model type not recognized')
+            return None
 
     def count(self, cls=None):
         """

@@ -83,11 +83,14 @@ class DBStorage:
         cls = str(cls)
         cls = cls.split('.')[2]
         cls = cls[:-2]
-        obj = self.__session.query(classes[cls]).filter(classes[cls].id == id).first() 
-        if obj:
-            return obj
+        if classes[cls] and id:
+            obj = self.__session.query(classes[cls]).filter(classes[cls].id == id).first() 
+            if obj:
+                return obj
+            return None
         else:
-           return None
+            raise TypeError("Module type not recognized")
+            return None
 
     def count(self, cls=None):
         """
