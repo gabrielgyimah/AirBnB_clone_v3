@@ -42,9 +42,8 @@ def status():
     return jsonify(status_msg)
 
 
-@app_views.route("/stats", methods=['GET'], strict_slashes=False)
+@app_views.route("/stats", methods=['GET'])
 def stat():
-    """Returns statistics on application modules"""
     stats = {}
     i = 0
     for cls in classes:
