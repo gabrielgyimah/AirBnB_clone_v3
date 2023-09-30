@@ -42,8 +42,8 @@ def status():
     return jsonify(status_msg)
 
 
-@app_views.route("/stats", methods=['GET'], strict_slashes=False)
-def stat():
+@app_views.route("/stats", methods=['GET'], strict_slashes=True)
+def index():
     """Returns stats on objects"""
     stats = {}
     i = 0
