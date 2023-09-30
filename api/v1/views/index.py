@@ -42,7 +42,7 @@ def status():
     return jsonify(status_msg)
 
 
-@app_views.route("/stats", methods=['GET'])
+@app_views.route("/stats", methods=['GET'], strict_slashes=False)
 def stat():
     stats = {}
     i = 0
