@@ -15,6 +15,7 @@ from models.review import Review
 from models.state import State
 from models.user import User
 
+
 classes = {
         "Amenity": Amenity,
         "City": City,
@@ -31,7 +32,7 @@ mods = [
         "reviews",
         "states",
         "users"
-    ]
+]
 
 
 @app_views.route("/status", strict_slashes=False)
@@ -51,3 +52,7 @@ def stat():
         stats[mods[i]] = count
         i += 1
     return make_response(jsonify(stats), 200)
+
+
+if __name__ == "__main__":
+    main()
