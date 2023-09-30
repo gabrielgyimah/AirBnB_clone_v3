@@ -30,7 +30,7 @@ mods = [
     ]
 
 
-@app_views.route("/status", strict_slashes=False) 
+@app_views.route("/status", strict_slashes=False)
 def status():
     """Returns a json Status"""
     status_msg = {'status': 'OK'}
@@ -40,7 +40,6 @@ def status():
 @app_views.route("/stats", strict_slashes=False)
 def stat():
     """Returns statistics on application modules"""
-
     stats = {}
     i = 0
     for cls in classes:
