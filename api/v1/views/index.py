@@ -52,7 +52,3 @@ def stat():
         stats[mods[i]] = count
         i += 1
     return make_response(jsonify(stats), 200)
-
-
-if __name__ == "__main__":
-    main()
