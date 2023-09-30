@@ -2,7 +2,7 @@
 """Request Status Module"""
 
 # Standard library imports
-from flask import jsonify
+from flask import jsonify, make_response
 
 # Related third-party imports
 from api.v1.views import app_views
@@ -49,4 +49,8 @@ def stat():
         count = storage.count(classes[cls])
         stats[mods[i]] = count
         i += 1
-    return jsonify(stats)
+    return make_response(jsonify(stats), 200)
+
+
+if __name__ == "__main__":
+    main()
