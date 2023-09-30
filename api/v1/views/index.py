@@ -1,8 +1,11 @@
 #!/usr/bin/python3
 """Request Status Module"""
 
-from api.v1.views import app_views
+# Standard library imports
 from flask import jsonify
+
+# Related third-party imports
+from api.v1.views import app_views
 from models import storage
 from models.amenity import Amenity
 from models.city import City
