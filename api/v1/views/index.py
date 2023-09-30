@@ -2,7 +2,8 @@
 """Request Status Module"""
 
 # Standard library imports
-from flask import jsonify, make_response
+from flask import jsonify
+from flask import make_response
 
 # Related third-party imports
 from api.v1.views import app_views
