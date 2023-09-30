@@ -3,19 +3,16 @@
 Contains the TestDBStorageDocs and TestDBStorage classes
 """
 
-from datetime import datetime
 import inspect
 import models
+from models import storage
 from models.engine import db_storage
 from models.amenity import Amenity
-from models.base_model import BaseModel
 from models.city import City
 from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
-import json
-import os
 import pep8
 import unittest
 DBStorage = db_storage.DBStorage
@@ -87,14 +84,14 @@ class TestFileStorage(unittest.TestCase):
     def test_save(self):
         """Test that save properly saves objects to file.json"""
 
-        def test_get_db(self):
+    def test_get_db(self):
         """ Tests the get method for obtaining an instance db storage"""
         dic = {"name": "Abia"}
         instance = State(**dic)
         storage.new(instance)
         storage.save()
         get_instance = storage.get(State, instance.id)
-        self.assertEqual(get_instance, instance)
+        self.assertEqual(get_instance.id, instance.id)
 
     def test_count(self):
         """ Tests count method in db_storage engine module"""
