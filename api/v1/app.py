@@ -5,10 +5,11 @@ import os
 from flask import Flask, jsonify, make_response
 from models import storage
 from api.v1.views import app_views
+from flask_cors import CORS
 
 
 app = Flask(__name__)
-
+cors = CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
 
 @app_views.app_errorhandler(404)
 def not_found_error(error):
