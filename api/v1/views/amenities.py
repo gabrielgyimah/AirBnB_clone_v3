@@ -1,21 +1,22 @@
 #!/usr/bin/python3
 """Amenity View Module"""
 
-from models import storage
-from models.amenity import Amenity
-from api.v1.views import app_views
+from flask import make_response
 from flask import jsonify
 from flask import abort
 from flask import request
 
+from models import storage
+from models.amenity import Amenity
+from api.v1.views import app_views
 
-"""API endpoints for amenities"""
 
 @app_views.route("/amenities", methods=["GET"], strict_slashes=False)
 def amenity():
     """Returns the list of all Amenity objects"""
     amenities = storage.all(Amenity)
     return jsonify([amenity.to_dict() for amenity in amenities.values()])
+
 
 @app_views.route("/amenities/<amenity_id>", methods=["GET"], strict_slashes=False)
 def get_amenity(amenity_id):
@@ -24,6 +25,7 @@ def get_amenity(amenity_id):
     if not amenity:
         abort(404)
     return jsonify(amenity.to_dict())
+
 
 @app_views.route("/amenities/<amenity_id>", methods=["DELETE"], strict_slashes=False)
 def del_amenity(amenity_id):
@@ -35,18 +37,20 @@ def del_amenity(amenity_id):
     storage.save()
     return ({}), 200
 
+
 @app_views.route("/amenities", methods=["POST"], strict_slashes=False)
 def create_amenity():
     """Creates an Amenity object and saves it to Storage"""
     req_data = request.get_json()
     if not req_data:
         return jsonify({"message": "Not a JSON"}), 400
-    elif not req_data["name"]:
+    elif "name" not in req_data:
         return jsonify({"message": "Missing name"}), 400
     amenity = Amenity(name=req_data["name"])
     storage.new(amenity)
     storage.save()
     return jsonify(amenity.to_dict()), 201
+
 
 @app_views.route("/amenities/<amenity_id>", methods=["PUT"], strict_slashes=False)
 def update_amenity(amenity_id):
@@ -62,7 +66,3 @@ def update_amenity(amenity_id):
             setattr(amenity, attr, req_data[attr])
     storage.save()
     return jsonify(amenity.to_dict()), 200
-
-
-if __name__ == "__main__":
-    main()

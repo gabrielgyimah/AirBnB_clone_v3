@@ -9,3 +9,5 @@ from api.v1.views.index import *
 from api.v1.views.states import State
 from api.v1.views.amenities import Amenity
 from api.v1.views.cities import City
+from api.v1.views.users import User
+from api.v1.views.places import Place
