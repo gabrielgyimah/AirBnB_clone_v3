@@ -1,30 +1,32 @@
 #!/usr/bin/python3
 """API Root Module"""
 
-from flask import Flask, jsonify
+import os
+from flask import Flask, jsonify, make_response
 from models import storage
 from api.v1.views import app_views
-import os
+
+
+app = Flask(__name__)
+
+
+@app_views.app_errorhandler(404)
+def not_found_error(error):
+    """Handlers 404 error"""
+    return make_response(jsonify({"error": "Not found"}), 404)
+
+
+@app.teardown_appcontext
+def end_session(exception=None):
+    """Ends the session"""
+    storage.close()
+
+
+app.register_blueprint(app_views)
+
 
 if __name__ == "__main__":
-    """API Root"""
+    host = os.environ.get("HBNB_API_HOST", '0.0.0.0')
+    port = os.environ.get("HBNB_API_PORT", 5000)
 
-    app = Flask(__name__)
-
-    @app_views.app_errorhandler(404)
-    def not_found_error(error):
-        """Handlers 404 error"""
-        err = {"error": "Not found"}
-        return jsonify(err)
-
-    app.register_blueprint(app_views)
-
-    host = os.environ.get("HBNB_API_HOST")
-    port = os.environ.get("HBNB_API_PORT")
-
-    if host is None:
-        host = "0.0.0.0"
-    if port is None:
-        port = 5000
-
-    app.run(host, port, threaded=True, debug=True)
+    app.run(host=host, port=port, threaded=True, debug=True)
