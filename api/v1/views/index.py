@@ -51,4 +51,4 @@ def index():
         count = storage.count(classes[cls])
         stats[mods[i]] = count
         i += 1
-    return make_response(jsonify(stats), 200)
+    return jsonify(stats)
