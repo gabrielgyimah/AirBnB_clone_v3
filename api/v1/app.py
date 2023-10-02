@@ -2,7 +2,9 @@
 """API Root Module"""
 
 import os
-from flask import Flask, jsonify, make_response
+from flask import Flask
+from flask import jsonify
+from flask import make_response
 from models import storage
 from api.v1.views import app_views
 from flask_cors import CORS
