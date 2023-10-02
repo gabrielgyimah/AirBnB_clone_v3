@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Users View Module"""
 
+import hashlib
 from flask import make_response
 from flask import jsonify
 from flask import abort
@@ -56,7 +57,8 @@ def create_user():
         return jsonify({"message": "Missing email"}), 400
     if "password" not in req_data:
         return jsonify({"message": "Missing password"}), 400
-
+    req_data["password"] = hashlib.md5(
+            req_data["password"].encode()).hexdigest()
     user = User(**req_data)
     storage.new(user)
     storage.save()
@@ -72,6 +74,9 @@ def update_user(user_id):
     user = storage.get(User, user_id)
     if not user:
         abort(404)
+    if "password" in req_data:
+        req_data["password"] = hashlib.md5(
+                req_data["password"].encode()).hexdigest()
     for attr in user.to_dict():
         if attr not in ['id',
                         'email',
