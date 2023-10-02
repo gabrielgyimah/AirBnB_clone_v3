@@ -76,7 +76,3 @@ def update_city(city_id):
             setattr(city, attr, req_data[attr])
     storage.save()
     return make_response(jsonify(city.to_dict()), 200)
-
-
-if __name__ == "__main__":
-    main()
