@@ -7,6 +7,7 @@ from models.state import State
 from flask import jsonify
 from flask import abort
 from flask import request
+from flask import make_response
 from models.base_model import BaseModel
 
 
@@ -14,7 +15,9 @@ from models.base_model import BaseModel
 def states():
     """Retrieves the list of all State objects"""
     db_states = storage.all(State)
-    return jsonify([state.to_dict() for state in db_states.values()])
+    return make_response(
+            jsonify([state.to_dict() for state in db_states.values()]))
+
 
 @app_views.route("/states/<state_id>", methods=['GET'], strict_slashes=False)
 def state(state_id):
@@ -22,9 +25,11 @@ def state(state_id):
     state = storage.get(State, state_id)
     if not state:
         abort(404)
-    return jsonify(state.to_dict())
+    return make_response(jsonify(state.to_dict()))
 
-@app_views.route("/states/<state_id>", methods=['DELETE'], strict_slashes=False)
+
+@app_views.route("/states/<state_id>",
+                 methods=['DELETE'], strict_slashes=False)
 def delete(state_id):
     """Deletes a state object from storage"""
     state = storage.get(State, state_id)
@@ -32,20 +37,22 @@ def delete(state_id):
         abort(404)
     state.delete()
     storage.save()
-    return jsonify({}), 200
+    return make_response(jsonify({}), 200)
+
 
 @app_views.route("/states", methods=['POST'], strict_slashes=False)
 def create():
     """Creates a new state object and saves it to storage"""
     req_data = request.get_json()
     if not req_data:
-        return jsonify({"message": "Not a JSON"}), 400
+        return make_response(jsonify({"message": "Not a JSON"}), 400)
     elif not req_data["name"]:
-        return jsonify({"message": "Missing name"}), 400
+        return make_response(
+                jsonify({"message": "Missing name"}), 400)
     state = State(**req_data)
     storage.new(state)
     storage.save()
-    return jsonify(state.to_dict()), 201
+    return make_response(jsonify(state.to_dict()), 201)
 
 
 @app_views.route("/states/<state_id>", methods=["PUT"], strict_slashes=False)
@@ -53,7 +60,7 @@ def update(state_id):
     """Updates a State Object in the Storage"""
     req_data = request.get_json()
     if not req_data:
-        return jsonify({"message": "Not a JSON"}), 400
+        return make_response(jsonify({"message": "Not a JSON"}), 400)
     state = storage.get(State, state_id)
     if not state:
         abort(404)
@@ -61,8 +68,4 @@ def update(state_id):
         if attr not in ['id', 'created_at', 'updated_at'] and attr in req_data:
             setattr(state, attr, req_data[attr])
     storage.save()
-    return jsonify(state.to_dict()), 200
-
-
-if __name__ == "__main__":
-    main()
+    return make_response(jsonify(state.to_dict()), 200)
