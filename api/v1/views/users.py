@@ -68,12 +68,15 @@ def update_user(user_id):
     """Updates a User Object"""
     req_data = request.get_json()
     if not request.is_json:
-        abort (400, "Not a JSON")
+        abort(400, "Not a JSON")
     user = storage.get(User, user_id)
     if not user:
         abort(404)
     for attr in user.to_dict():
-        if attr not in ['id', 'email', 'created_at', 'updated_at'] and attr in req_data:
+        if attr not in ['id',
+                        'email',
+                        'created_at',
+                        'updated_at'] and attr in req_data:
             setattr(user, attr, req_data[attr])
     storage.save()
     return jsonify(user.to_dict()), 200
